@@ -73,6 +73,7 @@ def run():
 	totalDown = 0
 	totalUp = 0
 	x = []
+	x_old = []
 	empty=[]
 	empty1=[]
 
@@ -114,14 +115,14 @@ def run():
 		# initialize the current status along with our list of bounding
 		# box rectangles returned by either (1) our object detector or
 		# (2) the correlation trackers
-		status = "Waiting"
+		status = "Esperando"
 		rects = []
 
 		# check to see if we should run a more computationally expensive
 		# object detection method to aid our tracker
 		if totalFrames % args["skip_frames"] == 0:
 			# set the status and initialize our new set of object trackers
-			status = "Detecting"
+			status = "Detectando"
 			trackers = []
 
 			# convert the frame to a blob and pass the blob through the
@@ -189,9 +190,9 @@ def run():
 		# draw a horizontal line in the center of the frame -- once an
 		# object crosses this line we will determine whether they were
 		# moving 'up' or 'down'
-		cv2.line(frame, (0, H // 2), (W, H // 2), (0, 0, 0), 3)
-		cv2.putText(frame, "-Prediction border - Entrance-", (10, H - ((i * 20) + 200)),
-			cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+		cv2.line(frame, (0, H // 2), (W, H // 2), (0, 0, 255), 3)
+		cv2.putText(frame, "-Borde de prediccion - Entrada -", (10, H - ((i * 20) + 200)),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
 
 		# use the centroid tracker to associate the (1) old object
 		# centroids with (2) the newly computed object centroids
@@ -245,7 +246,7 @@ def run():
 								print("[INFO] Alert sent")
 
 						to.counted = True
-						
+
 					x = []
 					# compute the sum of total people inside
 					x.append(len(empty1)-len(empty))
@@ -266,21 +267,27 @@ def run():
 		info = [
 		("Exit", totalUp),
 		("Enter", totalDown),
-		("Status", status),
+		("Estado", status),
 		]
 
 		info2 = [
 		("Total people inside", x),
 		]
+		if (x == x_old):
+			#print("same")
+			x_old = x_old
+		else:
+			print("new ", x)
+		x_old = x
 
                 # Display the output
 		for (i, (k, v)) in enumerate(info):
 			text = "{}: {}".format(k, v)
-			cv2.putText(frame, text, (10, H - ((i * 20) + 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2)
+			cv2.putText(frame, text, (10, H - ((i * 20) + 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
 		for (i, (k, v)) in enumerate(info2):
 			text = "{}: {}".format(k, v)
-			cv2.putText(frame, text, (265, H - ((i * 20) + 60)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+			cv2.putText(frame, text, (265, H - ((i * 20) + 60)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
 
 		# Initiate a simple log to save data at end of the day
 		if config.Log:
@@ -292,7 +299,7 @@ def run():
 				wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
 				wr.writerow(("End Time", "In", "Out", "Total Inside"))
 				wr.writerows(export_data)
-				
+
 		# check to see if we should write the frame to disk
 		if writer is not None:
 			writer.write(frame)
@@ -330,7 +337,7 @@ def run():
 	# # otherwise, release the video file pointer
 	# else:
 	# 	vs.release()
-	
+
 	# issue 15
 	if config.Thread:
 		vs.release()
