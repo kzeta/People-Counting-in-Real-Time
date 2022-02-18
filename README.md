@@ -1,3 +1,19 @@
+Para ejecutarlo
+python3 Run.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel
+con videos
+python3 Run.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4
+
+pip install -r requirements.txt
+  665  sudo pip install -r requirements.txt
+  666  sudo apt-get install build-essential cmake
+  667  sudo apt-get install libgtk-3-dev
+  668  sudo apt-get install libboost-all-dev
+  669  sudo pip install -r requirements.txt
+
+
+
+
+
 # People-Counting-in-Real-Time
 People Counting in Real-Time using live video stream/IP camera in OpenCV.
 
@@ -16,7 +32,7 @@ People Counting in Real-Time using live video stream/IP camera in OpenCV.
 - Automating features and optimising the real-time stream for better performance (with threading).
 - Acts as a measure towards footfall analysis and in a way to tackle COVID-19.
 
---- 
+---
 
 ## Table of Contents
 * [Simple Theory](#simple-theory)
@@ -27,7 +43,7 @@ People Counting in Real-Time using live video stream/IP camera in OpenCV.
 
 ## Simple Theory
 **SSD detector:**
-- We are using a SSD (Single Shot Detector) with a MobileNet architecture. In general, it only takes a single shot to detect whatever is in an image. That is, one for generating region proposals, one for detecting the object of each proposal. 
+- We are using a SSD (Single Shot Detector) with a MobileNet architecture. In general, it only takes a single shot to detect whatever is in an image. That is, one for generating region proposals, one for detecting the object of each proposal.
 - Compared to other 2 shot detectors like R-CNN, SSD is quite fast.
 - MobileNet, as the name implies, is a DNN designed to run on resource constrained devices. For example, mobiles, ip cameras, scanners etc.
 - Thus, SSD seasoned with a MobileNet should theoretically result in a faster, more efficient object detector.
@@ -35,7 +51,7 @@ People Counting in Real-Time using live video stream/IP camera in OpenCV.
 **Centroid tracker:**
 - Centroid tracker is one of the most reliable trackers out there.
 - To be straightforward, the centroid tracker computes the centroid of the bounding boxes.
-- That is, the bounding boxes are (x, y) co-ordinates of the objects in an image. 
+- That is, the bounding boxes are (x, y) co-ordinates of the objects in an image.
 - Once the co-ordinates are obtained by our SSD, the tracker computes the centroid (center) of the box. In other words, the center of an object.
 - Then an unique ID is assigned to every particular object deteced, for tracking over the sequence of frames.
 
@@ -44,7 +60,7 @@ People Counting in Real-Time using live video stream/IP camera in OpenCV.
 ```
 pip install -r requirements.txt
 ```
-- To run inference on a test video file, head into the directory/use the command: 
+- To run inference on a test video file, head into the directory/use the command:
 ```
 python run.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4
 ```
@@ -67,9 +83,9 @@ The following is an example of the added features. Note: You can easily on/off t
 <img src="https://imgur.com/Lr8mdUW.png" width=500>
 
 ***1. Real-Time alert:***
-- If selected, we send an email alert in real-time. Use case: If the total number of people (say 10 or 30) exceeded in a store/building, we simply alert the staff. 
+- If selected, we send an email alert in real-time. Use case: If the total number of people (say 10 or 30) exceeded in a store/building, we simply alert the staff.
 - You can set the max. people limit in config. (``` Threshold = 10 ```).
-- This is pretty useful considering the COVID-19 scenario. 
+- This is pretty useful considering the COVID-19 scenario.
 <img src="https://imgur.com/35Yf1SR.png" width=350>
 
 - Note: To setup the sender email, please refer the instructions inside 'mylib/mailer.py'. Setup receiver email in the config.
@@ -77,7 +93,7 @@ The following is an example of the added features. Note: You can easily on/off t
 
 ***2. Threading:***
 - Multi-Threading is implemented in 'mylib/thread.py'. If you ever see a lag/delay in your real-time stream, consider using it.
-- Threading removes OpenCV's internal buffer (which basically stores the new frames yet to be processed until your system processes the old frames) and thus reduces the lag/increases fps. 
+- Threading removes OpenCV's internal buffer (which basically stores the new frames yet to be processed until your system processes the old frames) and thus reduces the lag/increases fps.
 - If your system is not capable of simultaneously processing and outputting the result, you might see a delay in the stream. This is where threading comes into action.
 - It is most suitable for solid performance on complex real-time applications. To use threading:
 
@@ -124,7 +140,7 @@ if Timer:
 
 ## Next steps
 - Train the SSD on human data (with a top-down view).
-- Experiment with other detectors and benchmark the results on computationally less expensive embedded hardware. 
+- Experiment with other detectors and benchmark the results on computationally less expensive embedded hardware.
 - Evaluate the performance on multiple IP cameras.
 
 <p>&nbsp;</p>
